@@ -1,0 +1,110 @@
+
+.main-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    background-color: white;
+    width: 36%;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-items: center; */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 1.5rem;
+    padding: 3rem 5.5rem;
+}
+.main-container *:not(:last-child){
+    margin-bottom:2rem;
+}
+
+.form *:not(:last-child){
+    margin-bottom:2.5rem;
+    
+}
+.main-container .singin {
+
+    color: #4886ff;
+    text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.1);
+    font-size: 3rem;
+}
+
+.main-container input[type=text],  input[type=password]{
+    width: 100%;
+    padding: 1.3rem 2rem;
+    border: 1px solid  #80868b;;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 1.5rem;
+    
+}
+
+.main-container .span{
+    background: #fff;
+    bottom: 12px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #80868b;
+    font-size: 16px;
+    font-weight: 400;
+    left: 8px;
+    padding: 0 8px;
+    -webkit-transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    width: auto;
+    z-index: 1;
+}
+
+.main-container .login{
+
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    
+}
+
+.login .create_account{
+    color: #4886ff;
+    font-weight: 500;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+.postionrelative{
+
+    position: relative;
+}
+
+.positionabsolute{
+
+    position:absolute;
+}
+
+.main-container input[type=submit]{
+    border: none;
+    background: #4886ff;
+    padding: 1.2rem 2.5rem;
+    color: white;
+    font-family: inherit;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.main-container .forget-container{
+    width: 78%;
+    color: #4886ff;
+    font-weight: 500;
+
+}
+
+.textshadow{
+    text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.error{
+
+    color: #ff3434;
+    font-weight: 500;
+}
