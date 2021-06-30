@@ -2,7 +2,10 @@
     <head>
         <title>Fluidplayer</title>
         <link rel="stylesheet" href="css/style.css">
-        <meta
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+<meta
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
         />
@@ -32,8 +35,10 @@
             
             <div class="root_container" style="width: 100%;height:100%;">
                 <video id="video" autoplay muted></video>
-                <!--
+               <!--
                 <div class="root_controller-container">
+
+
                
                     <div class="control_container">
                            
@@ -47,17 +52,49 @@
                             </div>            
                         </div>
                         <div class="bottom-container">
-                                     
-               
+                                <div class="first_section">
+                                    <button class><svg class="create_icon  bg">
+                                        <use xlink:href="img/svg/sprite.svg#icon-volume"></use></svg></button>
+                                        <input type="range"  max="100" value="50" class="volSeekRange" >
+                                
+                                </div>
+                                <div class="second_section">
+                                    <div class="timer" id="curenttime">
+                                        00:00:00
+                                    </div>
+                                    <div class="center_control-container">
+                                        <button class><svg class="create_icon  bg">
+                                            <use xlink:href="img/svg/sprite.svg#icon-backward"></use></svg>
+                                        </button>
+                                        <button class="playPause" id='playPause'><svg class="create_icon ">
+                                                <use xlink:href="img/svg/sprite.svg#icon-play"></use></svg>
+                                        </button>
+                                        <button class><svg class="create_icon  bg">
+                                                    <use xlink:href="img/svg/sprite.svg#icon-forward"></use></svg>
+                                        </button>
+                                    </div>
+                                    <div class="timer" id="totaltime">
+                                        00:00:00
+                                    </div>
+                                </div>
+                                <div class="third_section">
+
+                                    <button class="playPause" id='playPause'><svg class="create_icon ">
+                                        <use xlink:href="img/svg/sprite.svg#icon-pip"></use></svg>
+                                </button>
+                                <button class><svg class="create_icon  bg">
+                                            <use xlink:href="img/svg/sprite.svg#icon-settings"></use></svg>
+                                </button>
+                                </div>
                         </div>
                          
                     </div>
                     
                 </div>
 
-                -->
+                
                
-
+-->
             </div>
 
     </body>
