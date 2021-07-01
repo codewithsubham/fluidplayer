@@ -77,4 +77,21 @@ export default class Player{
     }
 
 
+    updateLiveTotalDuration(duration){
+        // this function is being called from index.js inside hls.events.LEVEL_UPDATE if player is live
+
+        document.getElementById("playbackProgress").max = duration;
+        document.getElementById("myRange").max = duration;
+
+        console.log(duration , "duration");
+        return;
+    }
+
+    updateCurrentTime(currentTime){
+
+        document.getElementById("playbackProgress").value = currentTime;
+        document.getElementById("myRange").value = currentTime;
+        return;
+    }
+
 }
