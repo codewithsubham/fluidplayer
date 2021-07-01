@@ -4,9 +4,11 @@ import Vod from "./model/vod";
 
 let video = document.getElementById("video");
 let hls;
-let watchLiveDuration = 0;
+window.watchLiveDuration = 0;
 let videoIsLive = false;
 let isPlayerInitialised = false;
+
+window.timeTollerance = 30;
 
 
 
@@ -19,28 +21,31 @@ ffmpeg -re -i sample.mp4 -codec copy -f flv rtmp://visionias:vision123@172.104.2
 if (Hls.isSupported()) {
     hls = new Hls();
     let x = "http://localhost:1935/test/mp4:sample.mp4/playlist.m3u8";
-    hls.loadSource("http://172.104.207.27:9090/43cd8f35/myStream/playlist.m3u8?DVR");
+    hls.loadSource(x/*"http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR"*/);
     hls.attachMedia(video);
-    
+
    // console.log(hls)
 }
 
 hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
     //console.log(data.details.live);
-    watchLiveDuration =  Math.round(data.details.totalduration) 
+    window.watchLiveDuration =  parseInt(data.details.totalduration) 
     videoIsLive = data.details.live;
     initVideoPlayer(videoIsLive);
 
     if(videoIsLive){
         // update time whenever video duration is  changed
-        
-        window.liveplayer.updateLiveTotalDuration(parseInt(watchLiveDuration));
+         window.player.updateLiveTotalDuration(parseInt(window.watchLiveDuration));
+     }
 
-    }
+   
     // update the seekbar and totalVideo diuratio  if video is live;
 
     
 })
+
+
+
 
 
 let initVideoPlayer = (isLIVE) => {
@@ -54,14 +59,16 @@ let initVideoPlayer = (isLIVE) => {
 
     // construct player for once
     isPlayerInitialised = true;
-
+   
     if(isLIVE){
         // call live player
-        window.liveplayer = new Live();
+        window.player = new Live();
         return;
     }
-    
-    console.log(new Vod())
+
+    window.player = new Vod();
+    hls.on(Hls.Events.FRAG_BUFFERED, window.player.onFragmentLoad);
+  
     //call vod player
     return;
 
@@ -69,16 +76,27 @@ let initVideoPlayer = (isLIVE) => {
 
 
 video.ontimeupdate =  () => {
-  //  console.log(watchLiveDuration , "difference ");
-    console.log(video.currentTime);
 
-    window.liveplayer.updateCurrentTime(parseInt(video.currentTime));
 
-    if(watchLiveDuration - Math.round(video.currentTime) > 25){
-        console.log("not live")
-        return
-    }
 
- //   console.log("live");
-
+    if(videoIsLive){
+        
+        if(parseInt(window.watchLiveDuration - video.currentTime) < window.timeTollerance){
+            // if video current duration falls below videotolal duration then show  user video is live
+            
+            window.player.updateLiveCurrentTime(parseInt(window.watchLiveDuration)); 
+            document.getElementById("liveStatus").disabled = true;
+            document.getElementById("liveStatus").innerHTML = "LIVE";
+            return;
+        }
+        document.getElementById("liveStatus").disabled = false;
+        document.getElementById("liveStatus").innerHTML = "GO LIVE";
+        window.player.updateLiveCurrentTime(parseInt(video.currentTime)); 
+        return;
+    }else{
+        window.player.updateCurrentTime(parseInt(video.currentTime));
+    } 
+    
+   
 }
+

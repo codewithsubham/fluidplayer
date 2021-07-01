@@ -11,6 +11,7 @@
 	--overlay-color: #ffffff;
 	--top-positioning: calc(50% - (100% * 8 / 65.5));
 	--progress-rounding: 20px;
+	--main-color: #c0336c;
 }
 
 *,
@@ -242,10 +243,10 @@ progress.playbackProgress::-webkit-progress-bar {
 	background-color: var(--playback-track-color);
 }
 progress.playbackProgress::-webkit-progress-value {
-	background-color: #c0336c;
+	background-color: var(--main-color);
 }
 progress.playbackProgress::-moz-progress-bar {
-	background-color: #c0336c;
+	background-color: var(--main-color);
 }
 #bufferProgress::-webkit-progress-value {
 	-webkit-transition: width 0.6s linear;
@@ -341,4 +342,35 @@ progress.playbackProgress::-moz-progress-bar {
 
 .bottom-container .third_section button:not(:last-child) {
 	margin-right: 3rem;
+}
+
+.root_controller-container .liveStatus {
+	border: none;
+	background: var(--main-color);
+	padding: 0.8rem 2rem;
+	color: white;
+	font-family: inherit;
+	box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+	font-weight: 500;
+	border-radius: 2px;
+	cursor: pointer;
+	font-weight: 900;
+	font-size: 1.6rem;
+	top: 2%;
+	letter-spacing: 1px;
+	position: absolute;
+	left: 2%;
+}
+.second_section .timer {
+	flex: 0 20%;
+	text-align: center;
+	user-select: none; /* supported by Chrome and Opera */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+button {
+	cursor: pointer;
 }

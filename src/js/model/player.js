@@ -1,4 +1,4 @@
-import {elements} from "./domelements";
+import {elements , convertToTimecode} from "./domelements";
 
 
 export default class Player{
@@ -14,6 +14,8 @@ export default class Player{
         //t
 
        let elm = `<div class="root_controller-container">
+       <button class="liveStatus" style="display:none" id="liveStatus"> LIVE </button>
+
                      <div class="control_container">
                         <div class="top-container">
                         <div id="seekbar-wrapper">
@@ -65,33 +67,47 @@ export default class Player{
         elements.root_container.insertAdjacentHTML("beforeend" , elm);
         
         document.getElementById("myRange").addEventListener('input' , this.changeSeekValue);
-
+        
+        elements.liveStatus = document.getElementById("liveStatus");
         return true;
 
     }
 
 
     changeSeekValue(e){
-           
-            document.getElementById("playbackProgress").value =  parseInt(e.target.value);
+
+            if(window.watchLiveDuration < (window.timeTollerance + 20)) return;
+            
+            document.getElementById("playbackProgress").value = parseInt(e.target.value);
+            document.getElementById("myRange").value = parseInt(e.target.value);
+            document.getElementById("myRange").style.display = "initial"
+            video.currentTime = parseInt(e.target.value);
     }
 
 
-    updateLiveTotalDuration(duration){
-        // this function is being called from index.js inside hls.events.LEVEL_UPDATE if player is live
-
-        document.getElementById("playbackProgress").max = duration;
-        document.getElementById("myRange").max = duration;
-
-        console.log(duration , "duration");
-        return;
-    }
+  
 
     updateCurrentTime(currentTime){
-
+        
         document.getElementById("playbackProgress").value = currentTime;
         document.getElementById("myRange").value = currentTime;
+        document.getElementById("curenttime").innerHTML = convertToTimecode(parseInt(currentTime));
         return;
     }
+
+    onFragmentLoad() {
+        if (video.buffered.length == 0) return;
+        let progress;
+        let i;
+        for (i = 0; i < video.buffered.length; i++) {
+            if (video.buffered.end(i) >= document.getElementById("myRange").value) {
+                progress = video.buffered.end(i);
+                document.getElementById("bufferProgress").value = progress;
+                break;
+            }
+        }
+    }
+
+    
 
 }

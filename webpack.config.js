@@ -1,6 +1,20 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 module.exports = {
+    optimization: {
+        minimizer: [
+          new UglifyJsPlugin({
+            uglifyOptions: {
+              output: {
+                comments: false
+              }
+            }
+          })
+        ]
+      },
     entry:['babel-polyfill' , './src/js/index.js'] ,
     output: {
         path:path.resolve(__dirname , 'dist'),

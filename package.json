@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
-    "build": "webpack --mode production",
+    "build": "webpack   --mode production",
     "start": "webpack-dev-server  --mode development --open"
   },
-  "author": "karuna shankar and shubham prasad",
+  "author": "shubham prasad",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -23,6 +23,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "hls.js": "^1.0.7",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "video.js": "^7.6.0"
   }
 }
