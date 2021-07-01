@@ -2,6 +2,18 @@ export const elements = {
     root_container:document.querySelector(".root_container")
 }
 
+              
+export const themes = ["#9D4082","#744B8A","#144B8A","#334E70", "#BE493C","#FFE3F1","#C0336C","#FCB461","#8386F0"];
+
+export const getThemebutton = () =>{
+    let buttons = "";
+    for (const iterator of themes) {
+       buttons += `<button class="color" style="background-color: ${iterator};"></button>`;
+    }
+    return buttons;
+    // 
+}
+
 export const convertToTimecode = (d) => {
     if (d < 0) {
         d = d * -1;
@@ -14,4 +26,13 @@ export const convertToTimecode = (d) => {
     if (m < 10) m = "0" + m;
     if (s < 10) s = "0" + s;
     return h + m + ":" + s;
+}
+
+export const getIcons = (iconname) => {
+
+    return `
+    <svg class="create_icon">
+    <use xlink:href="img/svg/sprite.svg#${iconname}"></use></svg>
+    `;
+
 }

@@ -1,4 +1,5 @@
 import Hls  from "hls.js";
+import { getIcons } from "./model/domelements";
 import Live from "./model/live";
 import Vod from "./model/vod";
 
@@ -21,7 +22,7 @@ ffmpeg -re -i sample.mp4 -codec copy -f flv rtmp://visionias:vision123@172.104.2
 if (Hls.isSupported()) {
     hls = new Hls();
     let x = "http://localhost:1935/test/mp4:sample.mp4/playlist.m3u8";
-    hls.loadSource(x/*"http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR"*/);
+    hls.loadSource("http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR");
     hls.attachMedia(video);
 
    // console.log(hls)
@@ -66,7 +67,7 @@ let initVideoPlayer = (isLIVE) => {
         return;
     }
 
-    window.player = new Vod();
+   window.player = new Vod();
     hls.on(Hls.Events.FRAG_BUFFERED, window.player.onFragmentLoad);
   
     //call vod player
@@ -98,5 +99,12 @@ video.ontimeupdate =  () => {
     } 
     
    
+}
+
+video.onplay = function() {
+    document.getElementById("playPause").innerHTML = getIcons("icon-pause");
+}
+video.onpause = function() {
+    document.getElementById("playPause").innerHTML = getIcons("icon-play");
 }
 

@@ -78,7 +78,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 	border: 0 solid #010101;
 }
 input[type="range"]::-webkit-slider-thumb {
-	border: 4px solid #bf006b;
+	border: 4px solid var(--main-color);
 	height: 12px;
 	width: 12px;
 	border-radius: 16px;
@@ -107,7 +107,7 @@ input[type="range"]::-moz-range-track {
 	border: 0 solid #010101;
 }
 input[type="range"]::-moz-range-thumb {
-	border: 4px solid #bf006b;
+	border: 4px solid var(--main-color);
 	height: 4px;
 	width: 4px;
 	border-radius: 16px;
@@ -138,7 +138,7 @@ input[type="range"]::-ms-fill-upper {
 	box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
 }
 input[type="range"]::-ms-thumb {
-	border: 4px solid #bf006b;
+	border: 4px solid var(--main-color);
 	height: 12px;
 	width: 12px;
 	border-radius: 16px;
@@ -158,7 +158,7 @@ input[type="range"].volSeekRange {
 	width: 10rem;
 	height: 5px !important;
 	visibility: visible !important;
-	color: #a22091;
+	color: var(--main-color);
 	height: 4px;
 	background: #fff;
 	position: relative;
@@ -172,7 +172,7 @@ input[type="range"].volSeekRange {
 	margin: 0 2rem 0 -1.2rem;
 }
 input[type="range"].volSeekRange::-webkit-slider-thumb {
-	border: 4px solid #bf006b;
+	border: 4px solid var(--main-color);
 
 	width: 1.2rem;
 	border-radius: 16px;
@@ -373,4 +373,71 @@ progress.playbackProgress::-moz-progress-bar {
 
 button {
 	cursor: pointer;
+}
+
+button > * {
+	pointer-events: none;
+}
+
+.bottom-container #settings {
+	position: relative;
+}
+
+.bottom-container .third_section #settings .hd {
+	background: var(--main-color);
+	font-family: inherit;
+	font-size: 1.2rem;
+	padding: 0.2rem 1rem;
+	position: absolute;
+	color: white;
+	font-weight: 900;
+	font-family: "Poppins";
+	border-radius: 2px;
+	top: 5%;
+	left: 41%;
+}
+
+.setting_container {
+	position: absolute;
+	width: 24%;
+	height: 80%;
+	background: white;
+	bottom: 18%;
+	right: 1%;
+	border-radius: 3px;
+	box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+		0 2px 6px 2px rgb(60 64 67 / 15%);
+	padding: 2rem;
+}
+
+.setting_container .pallate_creater_holder .pallates {
+	width: 90%;
+	height: 20 rem;
+	background: rgba(255, 255, 255, 0.37);
+	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	margin-top: 1rem;
+	display: grid;
+	grid-template-columns: 31% 31% 31%;
+	justify-content: space-between;
+	padding: 2rem;
+	margin: 1rem auto;
+	row-gap: 1rem;
+	overflow-y: scroll;
+}
+
+.setting_container .pallate_creater_holder .pallates .color {
+	height: 3.5rem;
+	border: none;
+	border-radius: 4px;
+
+	box-shadow: 0 0px 4px 0px rgb(60 64 67 / 37%);
+
+	border: 4px solid #fff;
+}
+
+.pallate_creater_holder {
+	color: var(--main-color);
+	font-weight: 700;
+	font-size: 1.3rem;
 }
