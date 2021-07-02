@@ -487,8 +487,9 @@ button > * {
 #setting_buttons-holder {
 	overflow-x: hidden;
 	overflow-y: scroll;
-	height: 24rem;
+	height: 26rem;
 	position: relative;
+	margin-bottom: 0;
 }
 .menu_container #setting_buttons-holder .options {
 	margin-top: 1rem;
@@ -524,7 +525,39 @@ button > * {
 	transition: right ease-in-out 250ms;
 	right: 0;
 }
+.options_container .value_selector {
+	width: 90%;
+	min-height: 10%;
+	margin: 1rem auto 1rem;
+	background: rgba(255, 255, 255, 0.37);
+	border: none;
+	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
+	padding: 1rem 0;
+}
 
+.options_container .value_selector .value_checkbox {
+	display: block;
+	text-align: center;
+	font-size: 1.5rem;
+	font-weight: 600;
+	cursor: pointer;
+	font-family: "Open Sans", sans-serif;
+}
+.value_checkbox:not(:last-child) {
+	margin-bottom: 0.1rem;
+}
+.checkmark {
+	display: block;
+	padding: 0.5rem 2rem;
+}
+.options_container .value_selector #speed_radio:checked ~ span {
+	background-color: var(--main-color);
+	color: white;
+	border: none;
+	width: 90%;
+	display: block;
+	margin: 0 auto;
+}
 .remove_options {
 	left: -100% !important;
 }

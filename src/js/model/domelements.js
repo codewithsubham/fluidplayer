@@ -37,3 +37,16 @@ export const getIcons = (iconname) => {
 
 }
 
+export const getSpeedList = (lastValue) => {
+    let list = '';
+    for (const iterator of config.playBackSpeedList) {
+        console.log(iterator , lastValue);
+        let isChecked = (iterator == lastValue) ? "checked" : '';  
+        list += `<label class="value_checkbox">
+                    <input id='speed_radio' style="display:none" ${isChecked} value='${iterator}' name="speed_radio" type="radio" >
+                    <span class="checkmark">${iterator}x</span>
+                 </label>`;
+       
+    }
+    return list;
+}

@@ -1,5 +1,5 @@
 
-import {elements , convertToTimecode, getIcons, getThemebutton} from "./domelements";
+import {elements , convertToTimecode, getIcons, getThemebutton , getSpeedList} from "./domelements";
 
 
 export default class Player{
@@ -8,7 +8,9 @@ export default class Player{
     constructor(x){
         console.log(x);
         this.mainMenuIsOpen = false;
-        this.renderControlsHolder(); ;
+        this.renderControlsHolder(); 
+        this.isLock = false;
+        this.speedCheckedIndex = 1;
     }
 
 
@@ -38,7 +40,7 @@ export default class Player{
 
                                 <button id="qualityMenu" class="color_picker_button">Quality ${getIcons("icon-settings")} </button>
                                 <button id="seepMenu" class="color_picker_button">Speed ${getIcons("icon-meter")}</button>
-                                <button id="qualition_menus" class="color_picker_button">lock screen ${getIcons("icon-pushpin")}</button>
+                                <button id="lock" class="color_picker_button">lock screen ${getIcons("icon-pushpin")}</button>
                                 <button id="qualition_meneu" class="color_picker_button">Bookmarks ${getIcons("icon-bookmark")}</button>
                                 
                             </div>
@@ -47,7 +49,30 @@ export default class Player{
                                 <div class="backtooptions">
                                     <button id="returnToOption"> Quality </button>
                                 </div>
+                                
+                                <div class="value_selector">
+                                <label class="value_checkbox">
+                                    <input id='speed_radio' style="display:none" value='1' name="speed_radio" type="radio" >
+                                    <span class="checkmark">two</span>
+                                </label>
+                                
+                                <label class="value_checkbox">
+                                    <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
+                                    <span class="checkmark">One</span>
+                                </label>
+                                
+                                <label class="value_checkbox">
+                                <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
+                                <span class="checkmark">One</span>
+                            </label>
+                            
+                            <label class="value_checkbox">
+                            <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
+                            <span class="checkmark">One</span>
+                        </label>
+                        
 
+                                </div>
                             
                             </div>
                         </div>
@@ -122,10 +147,14 @@ export default class Player{
         document.getElementById("settings").addEventListener("click" , this.onSettingClick.bind(this));
 
         document.getElementById("qualityMenu").addEventListener("click" , this.showQualityList);
-        document.getElementById("seepMenu").addEventListener("click" , this.showSpeedList);
+        document.getElementById("seepMenu").addEventListener("click" , this.showSpeedList.bind(this));
 
+        document.getElementById("lock").addEventListener("click" , this.lockUnlock.bind(this));
+        document.querySelector(".value_selector").addEventListener("click" , this.changeValues.bind(this));
 
         document.querySelector(".options_container").addEventListener("click" , this.removeToOptions);
+        
+
         return true;
 
     }
@@ -250,14 +279,21 @@ export default class Player{
         document.querySelector(".options_container").classList.remove("remove_options_container")
 
         document.getElementById("returnToOption").innerHTML = `quality ${getIcons('icon-settings')}`;
+
+
+        document.querySelector(".value_selector").innerHTML = "quality list";
        // this.classList.add("remove_options");
     }
 
     showSpeedList(){
+
+        console.log(this.speedCheckedIndex , "asdasd");
         document.querySelector(".options").classList.add("remove_options");
         document.querySelector(".options_container").classList.remove("remove_options_container")
 
         document.getElementById("returnToOption").innerHTML = `speeds ${getIcons('icon-meter')}`;
+
+        document.querySelector(".value_selector").innerHTML = getSpeedList(this.speedCheckedIndex);
     }
     
     removeToOptions(e){
@@ -266,4 +302,34 @@ export default class Player{
         document.querySelector(".options_container").classList.add("remove_options_container")
         return
     }
+    lockUnlock(e){
+         if(!this.isLock)  {
+            e.target.innerHTML = `unlock screen ${getIcons("icon-unlock")}`;
+            
+         e.target.style.backgroundColor = "var(--main-color)";
+         e.target.style.color = "#fff";
+         e.target.querySelector("svg").style.fill = "#fff";
+            this.isLock = true;
+            return;
+         } 
+         e.target.innerHTML = `lock screen ${getIcons("icon-pushpin")}`;
+         e.target.style.backgroundColor = "#fff";
+         e.target.style.color = "var(--main-color)";
+         e.target.querySelector("svg").style.fill = "var(--main-color)";
+         this.isLock = false;
+         return;
+    }
+
+    changeValues(e){
+        if(e.target.type != "radio") return;
+
+        if(e.target.name == "speed_radio"){
+            //console.log(document.querySelector("input[type='radio'][name='speed_radio']:checked").value);
+            this.speedCheckedIndex = document.querySelector("input[type='radio'][name='speed_radio']:checked").value;
+            return;
+        }
+        
+    }
+
+
 }
