@@ -67,7 +67,7 @@ let initVideoPlayer = (isLIVE) => {
         return;
     }
 
-   window.player = new Vod();
+    window.player = new Vod();
     hls.on(Hls.Events.FRAG_BUFFERED, window.player.onFragmentLoad);
   
     //call vod player

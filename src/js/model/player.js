@@ -4,8 +4,10 @@ import {elements , convertToTimecode, getIcons, getThemebutton} from "./domeleme
 
 export default class Player{
 
+    
     constructor(x){
         console.log(x);
+        this.mainMenuIsOpen = false;
         this.renderControlsHolder(); ;
     }
 
@@ -16,7 +18,7 @@ export default class Player{
         console.log();
        let elm = `<div class="root_controller-container">
 
-       <div class="setting_container">
+       <div class="menu_container remove_setting_container">
 
        <div class="pallate_creater_holder">
            <h1>Change theme</h1>
@@ -24,8 +26,31 @@ export default class Player{
            <div class="pallates">
                 ${getThemebutton()}
            </div>
-
+           <input id="color_picker"  style="visibility: hidden;position:absolute;" type="color">
+            <label for="color_picker" class="color_picker_button">Be creative <span> ${getIcons("icon-palette")} </span></label>
+            <button id="qualition_menu" class="color_picker_button">dark mode ${getIcons("icon-theme")}</button>
+                               
        </div>
+       <div class="pallate_creater_holder " id="setting_buttons-holder">
+                            <h1>Settings</h1>
+                 
+                            <div class="options">
+
+                                <button id="qualityMenu" class="color_picker_button">Quality ${getIcons("icon-settings")} </button>
+                                <button id="seepMenu" class="color_picker_button">Speed ${getIcons("icon-meter")}</button>
+                                <button id="qualition_menus" class="color_picker_button">lock screen ${getIcons("icon-pushpin")}</button>
+                                <button id="qualition_meneu" class="color_picker_button">Bookmarks ${getIcons("icon-bookmark")}</button>
+                                
+                            </div>
+
+                            <div class="options_container remove_options_container">
+                                <div class="backtooptions">
+                                    <button id="returnToOption"> Quality </button>
+                                </div>
+
+                            
+                            </div>
+                        </div>
 
    </div>
 
@@ -89,7 +114,18 @@ export default class Player{
         document.getElementById("seekForward").addEventListener("click" , this.seekForward);
         document.getElementById("pip").addEventListener("click" , this.onBtnPipClick.bind(this));
 
-        document.querySelector(".pallates").addEventListener("click" , this.changeTheme)
+        document.querySelector(".pallates").addEventListener("click" , this.changeTheme);
+        
+        document.getElementById("color_picker").addEventListener("input" , this.showChangingColor);
+        document.getElementById("color_picker").addEventListener("change" , this.changeColor);
+        
+        document.getElementById("settings").addEventListener("click" , this.onSettingClick.bind(this));
+
+        document.getElementById("qualityMenu").addEventListener("click" , this.showQualityList);
+        document.getElementById("seepMenu").addEventListener("click" , this.showSpeedList);
+
+
+        document.querySelector(".options_container").addEventListener("click" , this.removeToOptions);
         return true;
 
     }
@@ -180,6 +216,54 @@ export default class Player{
     changeTheme(e){
         if(e.target.type != "submit") return console.log("not a button");
         document.querySelector(':root').style.setProperty('--main-color', e.target.style.backgroundColor);
+        
+        document.getElementById("color_picker").value = e.target.value;
         return;
+    }
+
+    changeColor(e){
+
+        console.log(e.target.value);     
+
+    }
+
+    showChangingColor(e){
+        document.querySelector(':root').style.setProperty('--main-color', e.target.value);
+        return;
+    }
+
+    onSettingClick(){
+        console.log(this.mainMenuIsOpen);
+        if(!this.mainMenuIsOpen){
+            document.querySelector(".menu_container").classList.remove("remove_setting_container");
+            this.mainMenuIsOpen = true;
+            return
+        }
+        document.querySelector(".menu_container").classList.add("remove_setting_container");
+        this.mainMenuIsOpen = false;
+        return
+    }
+
+    showQualityList(){
+
+        document.querySelector(".options").classList.add("remove_options");
+        document.querySelector(".options_container").classList.remove("remove_options_container")
+
+        document.getElementById("returnToOption").innerHTML = `quality ${getIcons('icon-settings')}`;
+       // this.classList.add("remove_options");
+    }
+
+    showSpeedList(){
+        document.querySelector(".options").classList.add("remove_options");
+        document.querySelector(".options_container").classList.remove("remove_options_container")
+
+        document.getElementById("returnToOption").innerHTML = `speeds ${getIcons('icon-meter')}`;
+    }
+    
+    removeToOptions(e){
+        if(e.target.id != "returnToOption") return;
+        document.querySelector(".options").classList.remove("remove_options");
+        document.querySelector(".options_container").classList.add("remove_options_container")
+        return
     }
 }

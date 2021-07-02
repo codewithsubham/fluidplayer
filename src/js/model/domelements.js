@@ -3,12 +3,12 @@ export const elements = {
 }
 
               
-export const themes = ["#9D4082","#744B8A","#144B8A","#334E70", "#BE493C","#FFE3F1","#C0336C","#FCB461","#8386F0"];
+export const themes = ["#9D4082","#744B8A","#144B8A","#334E70", "#BE493C","#744B8A","#144B8A","#334E70", "#BE493C","#FFE3F1","#C0336C","#FCB461","#8386F0"];
 
 export const getThemebutton = () =>{
     let buttons = "";
     for (const iterator of themes) {
-       buttons += `<button class="color" style="background-color: ${iterator};"></button>`;
+       buttons += `<button class="color" style="background-color: ${iterator};" value=${iterator}></button>`;
     }
     return buttons;
     // 
@@ -36,3 +36,4 @@ export const getIcons = (iconname) => {
     `;
 
 }
+

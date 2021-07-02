@@ -21,6 +21,10 @@
 	padding: 0;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
 }
 .active,
 :active,
@@ -28,8 +32,6 @@
 :focus:active {
 	background-image: none !important;
 	outline: 0 !important;
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;
 }
 html {
 	font-size: 62.5%;
@@ -257,6 +259,7 @@ progress.playbackProgress::-moz-progress-bar {
 	width: 100%;
 	height: 100%;
 	position: relative;
+	overflow: hidden;
 }
 
 .root_controller-container .control_container {
@@ -397,10 +400,14 @@ button > * {
 	left: 41%;
 }
 
-.setting_container {
+.remove_setting_container {
+	right: -100% !important;
+	visibility: hidden;
+}
+
+.menu_container {
 	position: absolute;
-	width: 24%;
-	height: 80%;
+	width: 35rem;
 	background: white;
 	bottom: 18%;
 	right: 1%;
@@ -408,36 +415,119 @@ button > * {
 	box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
 		0 2px 6px 2px rgb(60 64 67 / 15%);
 	padding: 2rem;
+
+	-webkit-transition: all ease-in-out 250ms;
+	transition: all ease-in-out 250ms;
 }
 
-.setting_container .pallate_creater_holder .pallates {
+.menu_container .pallate_creater_holder .pallates {
 	width: 90%;
-	height: 20 rem;
+	height: 14rem;
 	background: rgba(255, 255, 255, 0.37);
-	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.15);
+
+	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	border-radius: 4px;
 	margin-top: 1rem;
 	display: grid;
 	grid-template-columns: 31% 31% 31%;
 	justify-content: space-between;
-	padding: 2rem;
+	padding: 1rem 2rem;
 	margin: 1rem auto;
 	row-gap: 1rem;
 	overflow-y: scroll;
 }
 
-.setting_container .pallate_creater_holder .pallates .color {
+.menu_container .pallate_creater_holder .pallates .color {
 	height: 3.5rem;
 	border: none;
 	border-radius: 4px;
 
 	box-shadow: 0 0px 4px 0px rgb(60 64 67 / 37%);
 
-	border: 4px solid #fff;
+	border: 2px solid #fff;
 }
 
 .pallate_creater_holder {
+	font-family: "poppins";
 	color: var(--main-color);
-	font-weight: 700;
-	font-size: 1.3rem;
+	font-weight: 900;
+	font-size: 1rem;
+	margin-bottom: 3rem;
+	padding-bottom: 1;
+}
+
+.pallate_creater_holder .color_picker_button,
+#returnToOption {
+	margin: 0 auto;
+	width: 90%;
+	padding: 0.7rem 4em;
+	background: rgba(255, 255, 255, 0.37);
+	border: none;
+	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
+	color: var(--main-color);
+	font-family: "poppins";
+	font-size: 1.6rem;
+	font-weight: 500;
+	display: block;
+	text-align: center;
+	border-radius: 2px;
+	text-transform: capitalize;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	flex-direction: row;
+}
+
+.pallate_creater_holder .color_picker_button span svg {
+	width: 2.5rem;
+	height: 2.5rem;
+	fill: var(--main-color);
+}
+#setting_buttons-holder {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 24rem;
+	position: relative;
+}
+.menu_container #setting_buttons-holder .options {
+	margin-top: 1rem;
+	position: absolute;
+	width: 100%;
+	-webkit-transition: left ease-in-out 250ms;
+	transition: left ease-in-out 250ms;
+	left: 0%;
+}
+
+.color_picker_button:not(:last-child) {
+	margin-bottom: 1rem;
+}
+
+.menu_container .color_picker_button svg {
+	width: 2.5rem;
+	height: 2.5rem;
+	fill: var(--main-color);
+}
+
+#returnToOption svg {
+	width: 2.5rem;
+	height: 2.5rem;
+	fill: var(--main-color);
+}
+
+#setting_buttons-holder .options_container {
+	height: 20rem;
+	margin-top: 1rem;
+	position: absolute;
+	width: 100%;
+	-webkit-transition: right ease-in-out 250ms;
+	transition: right ease-in-out 250ms;
+	right: 0;
+}
+
+.remove_options {
+	left: -100% !important;
+}
+.remove_options_container {
+	right: -100% !important;
 }
