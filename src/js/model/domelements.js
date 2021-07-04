@@ -41,7 +41,7 @@ export const getSpeedList = (lastValue) => {
     let list = '';
     for (const iterator of config.playBackSpeedList) {
         let isChecked = (iterator == lastValue) ? "checked" : '';  
-        list += `<label class="value_checkbox">
+        list += `<label class="value_checkbox ">
                     <input id='speed_radio' style="display:none" ${isChecked} value='${iterator}' name="speed_radio" type="radio" >
                     <span class="checkmark">${iterator}x</span>
                  </label>`;
@@ -54,7 +54,7 @@ export const getQualityList = (qualityList , selectedIndex) => {
 
     let isChecked = (selectedIndex == -1) ? "checked" :"";
     
-    let qualityHTML = `<label class="value_checkbox">
+    let qualityHTML = `<label class="value_checkbox ">
         <input id='quality_radio' style="display:none" value=-1 ${isChecked} name="quality_radio" type="radio" >
          <span class="checkmark">auto</span>
     </label>`
@@ -64,7 +64,7 @@ export const getQualityList = (qualityList , selectedIndex) => {
     
         isChecked = (iterator == selectedIndex) ? "checked" : "";
         
-        qualityHTML += `<label class="value_checkbox">
+        qualityHTML += `<label class="value_checkbox ">
         <input id='quality_radio' style="display:none" value=${iterator} ${isChecked} name="quality_radio" type="radio" >
          <span class="checkmark">${qualityList[iterator].height}p</span>
     </label>`

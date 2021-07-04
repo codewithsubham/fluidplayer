@@ -5,13 +5,14 @@
 	--playback-track-color: rgba(0, 0, 0, 0.01);
 	--playback-prog-color: rgba(255, 255, 255, 0.75);
 	--seekbar-thumb-color: rgba(255, 0, 0, 0.5);
-	--menu-bg-color: rgba(0, 0, 0, 0.25);
 	--menu-highlight-color: rgba(0, 0, 0, 0.5);
 	--menu-selected-color: rgba(255, 255, 255, 0.75);
 	--overlay-color: #ffffff;
 	--top-positioning: calc(50% - (100% * 8 / 65.5));
 	--progress-rounding: 20px;
 	--main-color: #c0336c;
+	--menu-bg-color: #ffffff;
+	--theme-backgorund: #ffffff;
 }
 
 *,
@@ -38,6 +39,13 @@ html {
 	-webkit-font-smoothing: antialiased;
 	font-weight: 400;
 }
+::-webkit-scrollbar {
+	display: none;
+}
+::-webkit-scrollbar-thumb {
+	display: none;
+}
+
 body {
 	font-family: "Open Sans", sans-serif;
 	font-weight: 400;
@@ -46,7 +54,13 @@ body {
 	color: #202124;
 	background: black;
 }
-
+button,
+div,
+input,
+select,
+textarea {
+	-webkit-tap-highlight-color: transparent;
+}
 video {
 	position: absolute;
 	z-index: -1;
@@ -280,6 +294,15 @@ progress.playbackProgress::-moz-progress-bar {
 	transition: all ease-in-out 200ms;
 }
 
+.light_theme_color {
+	background: var(--theme-backgorund);
+	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
+
+	-webkit-transition: color ease-in 100ms;
+	transition: color ease-in 100ms;
+	border: 1px solid rgba(255, 255, 255, 0.253) !important;
+}
+
 .control_container .top-container {
 	width: 100%;
 	height: 20%;
@@ -417,7 +440,7 @@ button > * {
 .menu_container {
 	position: absolute;
 	width: 35rem;
-	background: white;
+	background: var(--menu-bg-color);
 	bottom: 18%;
 	right: 1%;
 	border-radius: 3px;
@@ -432,9 +455,6 @@ button > * {
 .menu_container .pallate_creater_holder .pallates {
 	width: 90%;
 	height: 14rem;
-	background: rgba(255, 255, 255, 0.37);
-
-	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	border-radius: 4px;
 	margin-top: 1rem;
 	display: grid;
@@ -469,10 +489,8 @@ button > * {
 #returnToOption {
 	margin: 0 auto;
 	width: 90%;
-	padding: 0.7rem 4em;
-	background: rgba(255, 255, 255, 0.37);
+	padding: 0.7rem 5rem;
 	border: none;
-	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	color: var(--main-color);
 	font-family: "poppins";
 	font-size: 1.6rem;

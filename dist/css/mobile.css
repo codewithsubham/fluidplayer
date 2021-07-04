@@ -1,0 +1,30 @@
+@media (max-width: 64em) {
+	html {
+		font-size: 50%;
+	}
+	.menu_container {
+		display: flex;
+		width: 70rem;
+	}
+	.pallate_creater_holder {
+		flex: 1;
+	}
+}
+@media (max-width: 56.25em) {
+	html {
+		font-size: 40%;
+	}
+	.menu_container {
+		display: flex;
+		width: 65rem;
+	}
+}
+@media (max-width: 37.5em) {
+	html {
+		font-size: 35%;
+	}
+	.menu_container {
+		display: flex;
+		width: 98%;
+	}
+}

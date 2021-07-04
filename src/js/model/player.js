@@ -32,12 +32,12 @@ export default class Player{
        <div class="pallate_creater_holder">
            <h1>Change theme</h1>
 
-           <div class="pallates">
+           <div class="pallates light_theme_color">
                 ${getThemebutton()}
            </div>
            <input id="color_picker"  style="visibility: hidden;position:absolute;" type="color">
-            <label for="color_picker" class="color_picker_button">Be creative <span> ${getIcons("icon-palette")} </span></label>
-            <button id="qualition_menu" class="color_picker_button">dark mode ${getIcons("icon-theme")}</button>
+            <label for="color_picker" class="color_picker_button light_theme_color">Be creative <span> ${getIcons("icon-palette")} </span></label>
+            <button id="darkmode" class="color_picker_button light_theme_color">dark mode ${getIcons("icon-theme")}</button>
                                
        </div>
        <div class="pallate_creater_holder " id="setting_buttons-holder">
@@ -45,39 +45,39 @@ export default class Player{
                  
                             <div class="options">
 
-                                <button id="qualityMenu" class="color_picker_button">Quality ${getIcons("icon-settings")} </button>
-                                <button id="seepMenu" class="color_picker_button">Speed ${getIcons("icon-meter")}</button>
-                                <button id="lock" class="color_picker_button">lock screen ${getIcons("icon-pushpin")}</button>
-                                <button id="qualition_meneu" class="color_picker_button">Bookmarks ${getIcons("icon-bookmark")}</button>
+                                <button id="qualityMenu" class="color_picker_button light_theme_color">Quality ${getIcons("icon-settings")} </button>
+                                <button id="seepMenu" class="color_picker_button light_theme_color">Speed ${getIcons("icon-meter")}</button>
+                                <button id="lock" class="color_picker_button light_theme_color">lock screen ${getIcons("icon-pushpin")}</button>
+                                <button id="qualition_meneu" class="color_picker_button light_theme_color">Bookmarks ${getIcons("icon-bookmark")}</button>
                                 
                             </div>
 
                             <div class="options_container remove_options_container">
                                 <div class="backtooptions">
-                                    <button id="returnToOption"> Quality </button>
+                                    <button id="returnToOption" class="light_theme_color"> Quality </button>
                                 </div>
                                 
-                                <div class="value_selector">
-                                <label class="value_checkbox">
+                                <div class="value_selector light_theme_color">
+                                <label class="value_checkbox" light_theme_color">
                                 <input id='quality_radio' style="display:none" value='-1' name="quality_radio" type="radio" >
                                 <span class="checkmark">auto</span>
                             </label>
-                                <label class="value_checkbox">
+                                <label class="value_checkbox light_theme_color">
                                     <input id='quality_radio' style="display:none" value='1' name="quality_radio" type="radio" >
                                     <span class="checkmark">1080 p</span>
                                 </label>
                                 
-                                <label class="value_checkbox">
+                                <label class="value_checkbox light_theme_color">
                                     <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
                                     <span class="checkmark">720 p</span>
                                 </label>
                                 
-                                <label class="value_checkbox">
+                                <label class="value_checkbox light_theme_color">
                                 <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
                                 <span class="checkmark">480 p</span>
                             </label>
                             
-                            <label class="value_checkbox">
+                            <label class="value_checkbox light_theme_color">
                             <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
                             <span class="checkmark">260 p</span>
                         </label>
@@ -171,6 +171,9 @@ export default class Player{
         document.querySelector(".root_controller-container").addEventListener("click" , this.hideControls.bind(this));
 
         document.querySelector(".root_controller-container").addEventListener("mousemove" , this.hideControlsMouseMove.bind(this));
+        
+        document.querySelector(".root_controller-container").addEventListener("dblclick" , this.fullScreen.bind(this));
+        document.getElementById("darkmode").addEventListener("click" , this.toogleDarKMode);
         return true;
 
     }
@@ -328,7 +331,7 @@ export default class Player{
             return;
          } 
          e.target.innerHTML = `lock screen ${getIcons("icon-pushpin")}`;
-         e.target.style.backgroundColor = "#fff";
+         e.target.style.backgroundColor = "var(--theme-backgorund)";
          e.target.style.color = "var(--main-color)";
          e.target.querySelector("svg").style.fill = "var(--main-color)";
          this.isLock = false;
@@ -430,6 +433,70 @@ export default class Player{
         } , 3000)
     }
 
+    toogleDarKMode(e){
+
+        if(!this.classList.contains("dark")){
+            //goes inside darkmode
+            //--menu-bg-color: #ffffff;
+	        //--theme-backgorund: #ffffff;
+            document.querySelector(':root').style.setProperty('--menu-bg-color', "#2B2F43");
+            document.querySelector(':root').style.setProperty('--theme-backgorund', "#272B3E");
+            
+       
+
+            //shows button for light mode
+            this.innerHTML = `Light mode ${getIcons("icon-sun")}`
+            this.classList.add("dark");
+            return;
+        }
+
+        document.querySelector(':root').style.setProperty('--menu-bg-color', "#ffffff");
+        document.querySelector(':root').style.setProperty('--theme-backgorund', "#ffffff");
+            
+        this.classList.remove("dark");
+        this.innerHTML = `dark mode ${getIcons("icon-theme")}`
+            
+        return;
+    }
+    
+    isFullscreen() {
+        return (
+            document.fullscreenElement ||
+            document.msFullscreenElement ||
+            document.mozFullScreen ||
+            document.webkitIsFullScreen
+        );
+    }
+
+    fullScreen(e){
+        if(e.target.className != "root_controller-container") return;
+        if (!this.isFullscreen()) {
+            //element = container || video;
+            let element = document.getElementById("root_container");
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else {
+                element.webkitRequestFullScreen();
+            }
+                screen.orientation.lock("landscape-primary");
+           } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else {
+                document.webkitCancelFullScreen();
+            }
+            screen.orientation.unlock();
+        }
+    
+    }
     
 
 }
