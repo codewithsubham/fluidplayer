@@ -1,16 +1,23 @@
 
-import {elements , convertToTimecode, getIcons, getThemebutton , getSpeedList} from "./domelements";
+import {elements , convertToTimecode, getIcons, getThemebutton , getSpeedList, getQualityList } from "./domelements";
 
 
 export default class Player{
 
     
-    constructor(x){
-        console.log(x);
+    
+    constructor(){
+        //console.log(x);
         this.mainMenuIsOpen = false;
         this.renderControlsHolder(); 
         this.isLock = false;
         this.speedCheckedIndex = 1;
+        this.qualityList;
+        this.selectedQualityIndex = -1;
+        this.isVolumeUpdated = false;
+        this.controlHideTimeOut;
+        this.menuIsClosed = false;
+        
     }
 
 
@@ -52,23 +59,27 @@ export default class Player{
                                 
                                 <div class="value_selector">
                                 <label class="value_checkbox">
-                                    <input id='speed_radio' style="display:none" value='1' name="speed_radio" type="radio" >
-                                    <span class="checkmark">two</span>
+                                <input id='quality_radio' style="display:none" value='-1' name="quality_radio" type="radio" >
+                                <span class="checkmark">auto</span>
+                            </label>
+                                <label class="value_checkbox">
+                                    <input id='quality_radio' style="display:none" value='1' name="quality_radio" type="radio" >
+                                    <span class="checkmark">1080 p</span>
                                 </label>
                                 
                                 <label class="value_checkbox">
-                                    <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
-                                    <span class="checkmark">One</span>
+                                    <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
+                                    <span class="checkmark">720 p</span>
                                 </label>
                                 
                                 <label class="value_checkbox">
-                                <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
-                                <span class="checkmark">One</span>
+                                <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
+                                <span class="checkmark">480 p</span>
                             </label>
                             
                             <label class="value_checkbox">
-                            <input id='speed_radio' style="display:none" value='2' name="speed_radio" type="radio">
-                            <span class="checkmark">One</span>
+                            <input id='quality_radio' style="display:none" value='2' name="quality_radio" type="radio">
+                            <span class="checkmark">260 p</span>
                         </label>
                         
 
@@ -91,9 +102,9 @@ export default class Player{
                     </div>
                     <div class="bottom-container">
                     <div class="first_section">
-                    <button class><svg class="create_icon  bg">
+                    <button id="volumeChange"><svg class="create_icon  bg">
                         <use xlink:href="img/svg/sprite.svg#icon-volume"></use></svg></button>
-                        <input type="range"  max="100" value="50" class="volSeekRange" >
+                        <input type="range" id="volume"  max="100" value="100" class="volSeekRange" >
                 
                 </div>
                 <div class="second_section">
@@ -146,15 +157,20 @@ export default class Player{
         
         document.getElementById("settings").addEventListener("click" , this.onSettingClick.bind(this));
 
-        document.getElementById("qualityMenu").addEventListener("click" , this.showQualityList);
+        document.getElementById("qualityMenu").addEventListener("click" , this.showQualityList.bind(this));
         document.getElementById("seepMenu").addEventListener("click" , this.showSpeedList.bind(this));
 
         document.getElementById("lock").addEventListener("click" , this.lockUnlock.bind(this));
         document.querySelector(".value_selector").addEventListener("click" , this.changeValues.bind(this));
 
+        document.getElementById("volumeChange").addEventListener("click" , this.chanageMuteStatus)
+        document.getElementById("volume").addEventListener("input" , this.updateVolume.bind(this));
         document.querySelector(".options_container").addEventListener("click" , this.removeToOptions);
         
 
+        document.querySelector(".root_controller-container").addEventListener("click" , this.hideControls.bind(this));
+
+        document.querySelector(".root_controller-container").addEventListener("mousemove" , this.hideControlsMouseMove.bind(this));
         return true;
 
     }
@@ -262,7 +278,6 @@ export default class Player{
     }
 
     onSettingClick(){
-        console.log(this.mainMenuIsOpen);
         if(!this.mainMenuIsOpen){
             document.querySelector(".menu_container").classList.remove("remove_setting_container");
             this.mainMenuIsOpen = true;
@@ -277,12 +292,10 @@ export default class Player{
 
         document.querySelector(".options").classList.add("remove_options");
         document.querySelector(".options_container").classList.remove("remove_options_container")
-
         document.getElementById("returnToOption").innerHTML = `quality ${getIcons('icon-settings')}`;
-
-
-        document.querySelector(".value_selector").innerHTML = "quality list";
-       // this.classList.add("remove_options");
+        document.querySelector(".value_selector").innerHTML =  getQualityList(this.qualityList , this.selectedQualityIndex);
+      
+        // this.classList.add("remove_options");
     }
 
     showSpeedList(){
@@ -290,18 +303,20 @@ export default class Player{
         console.log(this.speedCheckedIndex , "asdasd");
         document.querySelector(".options").classList.add("remove_options");
         document.querySelector(".options_container").classList.remove("remove_options_container")
-
         document.getElementById("returnToOption").innerHTML = `speeds ${getIcons('icon-meter')}`;
-
         document.querySelector(".value_selector").innerHTML = getSpeedList(this.speedCheckedIndex);
+
     }
     
     removeToOptions(e){
+
         if(e.target.id != "returnToOption") return;
         document.querySelector(".options").classList.remove("remove_options");
         document.querySelector(".options_container").classList.add("remove_options_container")
         return
+    
     }
+    
     lockUnlock(e){
          if(!this.isLock)  {
             e.target.innerHTML = `unlock screen ${getIcons("icon-unlock")}`;
@@ -326,10 +341,95 @@ export default class Player{
         if(e.target.name == "speed_radio"){
             //console.log(document.querySelector("input[type='radio'][name='speed_radio']:checked").value);
             this.speedCheckedIndex = document.querySelector("input[type='radio'][name='speed_radio']:checked").value;
+            video.playbackRate = this.speedCheckedIndex;
+            
+        }else if(e.target.name == "quality_radio"){
+            this.selectedQualityIndex = document.querySelector("input[type='radio'][name='quality_radio']:checked").value;
+            window.hls.loadLevel = parseInt(this.selectedQualityIndex);
+            
+        }
+
+
+        return
+
+    
+    }
+
+    setQualityList(list){
+        
+        this.qualityList = list;
+
+        console.log(this.qualityList , "qasdasd")
+       
+    }
+
+    chanageMuteStatus(){
+        if(video.muted){
+
+            this.innerHTML = getIcons("icon-volume");
+            video.muted = false;
+            document.getElementById("volume").value = video.volume * 100;
             return;
         }
+
+        
+        document.getElementById("volume").value = 0;
+        this.innerHTML = getIcons("icon-mute");
+        video.muted = true;
+        return;
+    }
+
+    updateVolume(e){
+        video.volume = parseInt(e.target.value)/100;
+        if(video.volume > 0){
+            if(!this.isVolumeUpdated){
+                video.muted =false;
+                document.getElementById("volumeChange").innerHTML =  getIcons("icon-volume");
+                this.isVolumeUpdated = true;
+            }
+            return;
+        }
+
+        video.muted = true;
+        document.getElementById("volumeChange").innerHTML =  getIcons("icon-mute");
+        this.isVolumeUpdated = false;
+        
         
     }
 
+    hideControls(e){
+        clearInterval(this.controlHideTimeOut);
+        if(e.target.className != "root_controller-container") return; 
+        if(this.mainMenuIsOpen){
+            this.onSettingClick();
+        }   
+        
+        this.closeMenu();
+       
+    }
+
+    hideControlsMouseMove(e){
+        clearInterval(this.controlHideTimeOut);
+        if(this.mainMenuIsOpen) return;
+        if(e.target.className != "root_controller-container") return; 
+        if(this.mainMenuIsOpen){
+            this.onSettingClick();
+            return;
+        }   
+        this.closeMenu();   
+    }
+
+    closeMenu(){
+        if(this.menuIsClosed){
+            document.querySelector(".control_container").style.bottom = "0";
+        }
+
+        this.controlHideTimeOut = setTimeout(() => {
+             document.querySelector(".control_container").style.bottom = "-100%";
+             this.menuIsClosed = true;
+        } , 3000)
+    }
+
+    
 
 }

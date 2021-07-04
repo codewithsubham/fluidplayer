@@ -4,7 +4,7 @@ import Live from "./model/live";
 import Vod from "./model/vod";
 
 let video = document.getElementById("video");
-let hls;
+window.hls;
 window.watchLiveDuration = 0;
 let videoIsLive = false;
 let isPlayerInitialised = false;
@@ -20,15 +20,28 @@ ffmpeg -re -i sample.mp4 -codec copy -f flv rtmp://visionias:vision123@172.104.2
 */
 
 if (Hls.isSupported()) {
-    hls = new Hls();
+
+    let conf = {
+        enableWorker: true,
+        liveBackBufferLength: 900,
+        /*
+        xhrSetup: function (xhr, url) {
+            xhr.withCredentials = true;
+        },
+        */
+        
+    };
+
+    window.hls = new Hls();
+    let y = "http://104.199.144.5:1935/vod/smil:4380201902171700.smil/playlist.m3u8";
     let x = "http://localhost:1935/test/mp4:sample.mp4/playlist.m3u8";
-    hls.loadSource("http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR");
-    hls.attachMedia(video);
+    window.hls.loadSource("http://172.104.207.27:9090/98b39719/smil:myStream.smil/playlist.m3u8?DVR"/*"http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR"*/);
+    window.hls.attachMedia(video);
 
    // console.log(hls)
 }
 
-hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
+window.hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
     //console.log(data.details.live);
     window.watchLiveDuration =  parseInt(data.details.totalduration) 
     videoIsLive = data.details.live;
@@ -48,7 +61,6 @@ hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
 
 
 
-
 let initVideoPlayer = (isLIVE) => {
     /** 
      * initVideoPlayer will initialize video player according to the type of video
@@ -60,16 +72,18 @@ let initVideoPlayer = (isLIVE) => {
 
     // construct player for once
     isPlayerInitialised = true;
+    
    
     if(isLIVE){
         // call live player
         window.player = new Live();
-        return;
+    }else{
+        window.player = new Vod();
+        window.hls.on(Hls.Events.FRAG_BUFFERED, window.player.onFragmentLoad);
     }
 
-    window.player = new Vod();
-    hls.on(Hls.Events.FRAG_BUFFERED, window.player.onFragmentLoad);
-  
+    window.hls.once(Hls.Events.MANIFEST_PARSED , window.player.setQualityList(hls.levels));
+    
     //call vod player
     return;
 
