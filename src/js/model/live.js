@@ -3,8 +3,8 @@ import { elements ,  convertToTimecode } from "./domelements";
 
 export default class Live extends Player{
 
-    constructor(){
-        super("call from live");
+    constructor(isLive){
+        super(isLive);
         
         elements.liveStatus.style.display = "block";
         elements.liveStatus.addEventListener("click" , () => {

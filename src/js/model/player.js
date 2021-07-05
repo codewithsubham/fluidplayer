@@ -1,13 +1,14 @@
 
-import {elements , convertToTimecode, getIcons, getThemebutton , getSpeedList, getQualityList } from "./domelements";
+import {elements , convertToTimecode, getIcons, getThemebutton , getSpeedList, getQualityList , getVolumeVolumeHTML, getSavedLastDuration, deviceIsMobile, isPIPSupported ,getPIPButton} from "./domelements";
 
 
 export default class Player{
 
     
     
-    constructor(){
-        //console.log(x);
+    constructor(isLive){
+        
+        this.isLive = isLive;
         this.mainMenuIsOpen = false;
         this.renderControlsHolder(); 
         this.isLock = false;
@@ -17,6 +18,8 @@ export default class Player{
         this.isVolumeUpdated = false;
         this.controlHideTimeOut;
         this.menuIsClosed = false;
+        this.lockScreen = false;
+        this.updatedTime = 0;
         
     }
 
@@ -24,7 +27,6 @@ export default class Player{
     renderControlsHolder(){
 
         //t
-        console.log();
        let elm = `<div class="root_controller-container">
 
        <div class="menu_container remove_setting_container">
@@ -95,21 +97,23 @@ export default class Player{
                      <div class="control_container">
                         <div class="top-container">
                         <div id="seekbar-wrapper">
-                            <input type="range"  max="100" value="0" class="slider" id="myRange">
+                            <div id="tooltip"></div>
+                            <input type="range"  max="100" value="0"  step="1" class="slider" id="myRange">
                             <progress id="bufferProgress" max="100" value="0" class="bufferProgress"></progress>
                             <progress id="playbackProgress" max="100" value="0" class="playbackProgress"></progress>
                         </div>            
                     </div>
                     <div class="bottom-container">
                     <div class="first_section">
-                    <button id="volumeChange"><svg class="create_icon  bg">
-                        <use xlink:href="img/svg/sprite.svg#icon-volume"></use></svg></button>
-                        <input type="range" id="volume"  max="100" value="100" class="volSeekRange" >
-                
+                    <button id="volumeChange">
+
+                        ${getVolumeVolumeHTML(this.isLive)}
+                        
+                     
                 </div>
                 <div class="second_section">
                     <div class="timer" id="curenttime">
-                        00:00:00
+                         ${getSavedLastDuration(this.isLive)}
                     </div>
                     <div class="center_control-container">
                         <button id="seekBackward"><svg class="create_icon">
@@ -124,14 +128,13 @@ export default class Player{
                         </button>
                     </div>
                     <div class="timer" id="totaltime">
-                        00:00:00
+                        00:00:00 
                     </div>
                 </div>
                 <div class="third_section">
 
-                    <button  id='pip'><svg class="create_icon ">
-                        <use xlink:href="img/svg/sprite.svg#icon-pip"></use></svg>
-                </button>
+                    ${getPIPButton()}
+                    
                 <button id="settings"><svg class="create_icon  bg">
                             <use xlink:href="img/svg/sprite.svg#icon-settings"></use></svg>
                             <span class="hd">HD</span>
@@ -139,16 +142,20 @@ export default class Player{
                 </div>
                     </div>
                 </div>
+               
             </div>
         ` 
         elements.root_container.insertAdjacentHTML("beforeend" , elm);
-        document.getElementById("myRange").addEventListener('input' , this.changeSeekValue);
+        document.getElementById("myRange").addEventListener('input' , this.changeSeekValue.bind(this));
+        if(!deviceIsMobile()) document.getElementById("seekbar-wrapper").addEventListener('mousemove' , this.showTooltip.bind(this));
+        if(!deviceIsMobile()) document.getElementById("seekbar-wrapper").addEventListener('mouseout' , this.hideTooltip.bind(this));
+       
         elements.liveStatus = document.getElementById("liveStatus");
         
         document.getElementById("playPause").addEventListener("click" , this.playPause);
         document.getElementById("seekBackward").addEventListener("click" , this.seekBackward);
         document.getElementById("seekForward").addEventListener("click" , this.seekForward);
-        document.getElementById("pip").addEventListener("click" , this.onBtnPipClick.bind(this));
+        if(isPIPSupported()) document.getElementById("pip").addEventListener("click" , this.onBtnPipClick.bind(this));
 
         document.querySelector(".pallates").addEventListener("click" , this.changeTheme);
         
@@ -164,7 +171,7 @@ export default class Player{
         document.querySelector(".value_selector").addEventListener("click" , this.changeValues.bind(this));
 
         document.getElementById("volumeChange").addEventListener("click" , this.chanageMuteStatus)
-        document.getElementById("volume").addEventListener("input" , this.updateVolume.bind(this));
+        if(!deviceIsMobile()) document.getElementById("volume").addEventListener("input" , this.updateVolume.bind(this));
         document.querySelector(".options_container").addEventListener("click" , this.removeToOptions);
         
 
@@ -181,10 +188,14 @@ export default class Player{
 
     changeSeekValue(e){
 
+            //let x = 0;//document.querySelector(".control_container").offsetWidth*(2/100);
+         
+
+            e.target.value =  this.updatedTime ? this.updatedTime : e.target.value;
             if(window.watchLiveDuration < (window.timeTollerance + 20)) return;
             document.getElementById("playbackProgress").value = parseInt(e.target.value);
             document.getElementById("myRange").value = parseInt(e.target.value);
-            document.getElementById("myRange").style.display = "initial"
+            document.getElementById("curenttime").innerHTML = convertToTimecode(parseInt(e.target.value));
             video.currentTime = parseInt(e.target.value);
     }
 
@@ -192,6 +203,8 @@ export default class Player{
   
 
     updateCurrentTime(currentTime){
+
+              
         
         document.getElementById("playbackProgress").value = currentTime;
         document.getElementById("myRange").value = currentTime;
@@ -213,7 +226,6 @@ export default class Player{
     }
 
     playPause(){
-        console.log(getIcons("icon-play"))
 
         if(video.paused){
             document.getElementById("playPause").innerHTML = getIcons("icon-pause");
@@ -264,7 +276,8 @@ export default class Player{
     changeTheme(e){
         if(e.target.type != "submit") return console.log("not a button");
         document.querySelector(':root').style.setProperty('--main-color', e.target.style.backgroundColor);
-        
+        localStorage.setItem(`--main-color` , e.target.style.backgroundColor);
+        localStorage.setItem(`--main-color-hexvalue` , e.target.value)
         document.getElementById("color_picker").value = e.target.value;
         return;
     }
@@ -303,7 +316,6 @@ export default class Player{
 
     showSpeedList(){
 
-        console.log(this.speedCheckedIndex , "asdasd");
         document.querySelector(".options").classList.add("remove_options");
         document.querySelector(".options_container").classList.remove("remove_options_container")
         document.getElementById("returnToOption").innerHTML = `speeds ${getIcons('icon-meter')}`;
@@ -323,13 +335,17 @@ export default class Player{
     lockUnlock(e){
          if(!this.isLock)  {
             e.target.innerHTML = `unlock screen ${getIcons("icon-unlock")}`;
-            
-         e.target.style.backgroundColor = "var(--main-color)";
-         e.target.style.color = "#fff";
-         e.target.querySelector("svg").style.fill = "#fff";
+                
+            e.target.style.backgroundColor = "var(--main-color)";
+            e.target.style.color = "#fff";
+            e.target.querySelector("svg").style.fill = "#fff";
             this.isLock = true;
+            
+            // lockScreen is to stop menu hide automatically and being checked closeMenu
+            this.lockScreen = true;
             return;
          } 
+         this.lockScreen = false;
          e.target.innerHTML = `lock screen ${getIcons("icon-pushpin")}`;
          e.target.style.backgroundColor = "var(--theme-backgorund)";
          e.target.style.color = "var(--main-color)";
@@ -362,7 +378,6 @@ export default class Player{
         
         this.qualityList = list;
 
-        console.log(this.qualityList , "qasdasd")
        
     }
 
@@ -371,12 +386,12 @@ export default class Player{
 
             this.innerHTML = getIcons("icon-volume");
             video.muted = false;
-            document.getElementById("volume").value = video.volume * 100;
+            if(!deviceIsMobile())  document.getElementById("volume").value = video.volume * 100;
             return;
         }
 
         
-        document.getElementById("volume").value = 0;
+        if(!deviceIsMobile()) document.getElementById("volume").value = 0;
         this.innerHTML = getIcons("icon-mute");
         video.muted = true;
         return;
@@ -401,17 +416,20 @@ export default class Player{
     }
 
     hideControls(e){
+
         clearInterval(this.controlHideTimeOut);
         if(e.target.className != "root_controller-container") return; 
         if(this.mainMenuIsOpen){
             this.onSettingClick();
         }   
-        
+       
         this.closeMenu();
        
     }
 
     hideControlsMouseMove(e){
+        
+        if(this.lockScreen) return;
         clearInterval(this.controlHideTimeOut);
         if(this.mainMenuIsOpen) return;
         if(e.target.className != "root_controller-container") return; 
@@ -423,6 +441,8 @@ export default class Player{
     }
 
     closeMenu(){
+        if(this.lockScreen) return;
+       
         if(this.menuIsClosed){
             document.querySelector(".control_container").style.bottom = "0";
         }
@@ -442,6 +462,7 @@ export default class Player{
             document.querySelector(':root').style.setProperty('--menu-bg-color', "#2B2F43");
             document.querySelector(':root').style.setProperty('--theme-backgorund', "#272B3E");
             
+            localStorage.setItem(`dark` , true);
        
 
             //shows button for light mode
@@ -452,7 +473,8 @@ export default class Player{
 
         document.querySelector(':root').style.setProperty('--menu-bg-color', "#ffffff");
         document.querySelector(':root').style.setProperty('--theme-backgorund', "#ffffff");
-            
+        
+        localStorage.setItem(`dark` , false);
         this.classList.remove("dark");
         this.innerHTML = `dark mode ${getIcons("icon-theme")}`
             
@@ -497,6 +519,29 @@ export default class Player{
         }
     
     }
-    
+    calcSliderPos(e) {
+        return (e.offsetX / e.target.clientWidth) *  parseInt(e.target.getAttribute('max'),10);
+    }
+    showTooltip(e){
+        if(this.mainMenuIsOpen) return;
+        if(e.target.id != "myRange") return;
 
+        document.getElementById("tooltip").style.display = "block"
+        
+        let tooltip = document.getElementById("tooltip");
+        let w = e.target.offsetWidth;
+
+
+        if(e.x >  tooltip.offsetWidth  - tooltip.offsetWidth/4 && e.x < w - tooltip.offsetWidth/4){
+            tooltip.style.left = e.x - tooltip.offsetWidth/4;
+       
+        }
+    
+        document.getElementById("tooltip").innerHTML = convertToTimecode(this.calcSliderPos(e).toFixed(2));
+        this.updatedTime =  this.calcSliderPos(e).toFixed(2);
+    }
+
+    hideTooltip(e){
+        document.getElementById("tooltip").style.display = "none"
+    }
 }

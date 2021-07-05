@@ -74,7 +74,7 @@ video {
 
 input[type="range"] {
 	-webkit-appearance: none;
-	width: calc(100%);
+	width: 100%;
 	background-color: transparent;
 	height: 6px;
 	position: absolute;
@@ -234,11 +234,13 @@ progress.playbackProgress {
 	position: absolute;
 	z-index: -1;
 	background-color: var(--playback-track-color);
+	width: 100%;
 }
 .bufferProgress {
 	z-index: -1;
 	position: absolute;
 	border-radius: var(--progress-rounding);
+	width: 100%;
 }
 .bufferProgress::-webkit-progress-bar {
 	background-color: var(--track-color);
@@ -600,4 +602,29 @@ button > * {
 }
 .remove_options_container {
 	right: -100% !important;
+}
+
+#tooltip {
+	position: absolute;
+	color: var(--main-color);
+	background: var(--theme-backgorund);
+	top: -6.5rem;
+	font-family: "Poppins";
+	font-size: 1rem;
+	text-align: center;
+	padding: 1rem 0rem;
+	color: var(--main-color);
+	font-family: "poppins";
+	font-size: 1.8rem;
+	text-align: center;
+	font-weight: 600;
+	display: block;
+	text-align: center;
+	border-radius: 2px;
+	cursor: pointer;
+	width: 10%;
+	border: 1px solid rgba(255, 255, 255, 0.253) !important;
+	transform: translate(-50%, -0%);
+	left: 20%;
+	display: none;
 }

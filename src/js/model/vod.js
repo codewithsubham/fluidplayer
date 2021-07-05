@@ -1,11 +1,11 @@
 import Player from "./player";
-import {convertToTimecode} from "./domelements"
+import {convertToTimecode, setThemeOnStart } from "./domelements"
 
 export default class Vod extends Player{
 
-    constructor(){
+    constructor(isLive){
 
-        super();
+        super(isLive);
         this.initVodPlayer();
     }
 
@@ -16,10 +16,16 @@ export default class Vod extends Player{
             document.getElementById("myRange").max = video.duration;
             document.getElementById("bufferProgress").max = video.duration;
 
+            setThemeOnStart();
 
             // currenttime and totalduration text
             document.getElementById("totaltime").innerHTML = convertToTimecode(parseInt(video.duration));
-        }
+            
+            if(localStorage.getItem(`currentTime-${config.videoid}`)){
+                video.currentTime = parseInt(localStorage.getItem(`currentTime-${config.videoid}`));
+            }
+
+         }
         return;
     }
 

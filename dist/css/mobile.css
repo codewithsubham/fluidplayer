@@ -10,6 +10,15 @@
 		flex: 1;
 	}
 }
+@media screen and (max-height: 45em) {
+	.menu_container {
+		display: flex;
+		width: 70rem;
+	}
+	.pallate_creater_holder {
+		flex: 1;
+	}
+}
 @media (max-width: 56.25em) {
 	html {
 		font-size: 40%;
@@ -17,6 +26,12 @@
 	.menu_container {
 		display: flex;
 		width: 65rem;
+	}
+	.root_controller-container .control_container {
+		height: 25%;
+	}
+	.menu_container {
+		bottom: 25%;
 	}
 }
 @media (max-width: 37.5em) {
@@ -26,5 +41,14 @@
 	.menu_container {
 		display: flex;
 		width: 98%;
+	}
+	.root_controller-container .control_container {
+		height: 25%;
+	}
+	.menu_container {
+		bottom: 25%;
+	}
+	.control_container .bottom-container {
+		grid-template-columns: 15% 70% 15%;
 	}
 }

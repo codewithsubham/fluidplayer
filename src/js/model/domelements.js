@@ -14,6 +14,19 @@ export const getThemebutton = () =>{
     // 
 }
 
+export const deviceIsMobile = () => {
+
+    // this will be rendered from server
+    if(config.isMobile != undefined) return config.isMobile;
+
+    // if server is not available;
+
+    if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) return true;
+
+    return false;
+
+}
+
 export const convertToTimecode = (d) => {
     if (d < 0) {
         d = d * -1;
@@ -52,6 +65,8 @@ export const getSpeedList = (lastValue) => {
 
 export const getQualityList = (qualityList , selectedIndex) => {
 
+    console.log(qualityList , "sasdad");
+
     let isChecked = (selectedIndex == -1) ? "checked" :"";
     
     let qualityHTML = `<label class="value_checkbox ">
@@ -64,12 +79,86 @@ export const getQualityList = (qualityList , selectedIndex) => {
     
         isChecked = (iterator == selectedIndex) ? "checked" : "";
         
-        qualityHTML += `<label class="value_checkbox ">
+        qualityHTML += `<label class="value_checkbox">
         <input id='quality_radio' style="display:none" value=${iterator} ${isChecked} name="quality_radio" type="radio" >
          <span class="checkmark">${qualityList[iterator].height}p</span>
     </label>`
     }
 
     return qualityHTML;
+
+}
+
+export const getVolumeVolumeHTML =(isLive) => {
+    let volumeSeekbar = deviceIsMobile() ? '' : `<input type="range" id="volume"  max="100" value="100" class="volSeekRange" >` ;
+
+    if(!isLive){
+
+        return `<svg class="create_icon  bg">
+        <use xlink:href="img/svg/sprite.svg#icon-volume"></use></svg></button>
+        ${volumeSeekbar}
+       `;
+
+    }else{
+
+        return `<svg class="create_icon  bg">
+        <use xlink:href="img/svg/sprite.svg#icon-mute"></use></svg></button>
+        ${volumeSeekbar}}`
+    }
+
+}
+
+export const getSavedLastDuration  = (isLive) => {
+
+    
+    if(isLive) return '00:00:00';
+
+    
+    if(localStorage.getItem(`currentTime-${config.videoid}`)){
+        return convertToTimecode(parseInt(localStorage.getItem(`currentTime-${config.videoid}`)));
+    }
+    
+
+    return "00:00:00";
+
+
+}
+
+export const isPIPSupported = () => {
+    if( document.pictureInPictureEnabled && !video.disablePictureInPicture) return true;
+
+    return false;
+}
+
+export const getPIPButton = () => {
+
+    if(isPIPSupported()) return `<button  id='pip'><svg class="create_icon ">
+    <use xlink:href="img/svg/sprite.svg#icon-pip"></use></svg>
+</button>`;
+
+    return '';
+
+}
+
+export let setThemeOnStart= () => {
+
+    console.log("theme called");
+    //set theme and color
+    let darkmode = localStorage.getItem('dark');
+    let last_main_color =  localStorage.getItem("--main-color");
+    let last_main_color_hex = localStorage.getItem("--main-color-hexvalue");
+   
+    if(darkmode == 'true'){
+
+        document.getElementById("darkmode").classList.add("dark");
+        document.getElementById("darkmode").innerHTML = `Light mode ${getIcons("icon-sun")}`
+        document.querySelector(':root').style.setProperty('--menu-bg-color', "#2B2F43");
+        document.querySelector(':root').style.setProperty('--theme-backgorund', "#272B3E");
+        
+    }
+    document.getElementById("color_picker").value = last_main_color_hex;
+    document.querySelector(':root').style.setProperty('--main-color', last_main_color);
+  //  document.getElementById("color_picker").value = last_main_color_hex;
+
 
 }
