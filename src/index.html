@@ -36,7 +36,7 @@
 
             
             <div id="root_container" class="root_container" style="width: 100%;height:100%;">
-                <video id="video" autoplay></video>
+                <video id="video" autoplay poster="http://live.visionias.in:8080/logo/Vision.png"></video>
                <!-- 
                         
      
@@ -130,15 +130,28 @@
                   -->
             </div>
             
+            <script>
+                let config = {
+                    seekValue:10,
+                    playBackSpeedList:[0.25 , .5 , 1 , 2 ],
+                    videoid:"",
+                    isMobile:undefined,
+                    conf:{
+                    enableWorker: true,
+                    liveBackBufferLength: 600,
+                    /*
+                    xhrSetup: function (xhr, url) {
+                        xhr.withCredentials = true;
+                    },
+                    */
+                 },
+                 
+                 url:"http://172.104.207.27:9090/42c6c244/smil:myStream.smil/playlist.m3u8?DVR",
 
+                 errorCode: "Opps Something went wrong pleae reload video"
+            
+                }
+                </script>
     </body>
-    <script>
-    let config = {
-        seekValue:10,
-        playBackSpeedList:[0.25 , .5 , 1 , 2 ],
-        videoid:"",
-        isMobile:undefined
 
-    }
-    </script>
 </html>

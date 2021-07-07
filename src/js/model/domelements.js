@@ -1,3 +1,4 @@
+
 export const elements = {
     root_container:document.querySelector(".root_container")
 }
@@ -65,7 +66,6 @@ export const getSpeedList = (lastValue) => {
 
 export const getQualityList = (qualityList , selectedIndex) => {
 
-    console.log(qualityList , "sasdad");
 
     let isChecked = (selectedIndex == -1) ? "checked" :"";
     
@@ -90,7 +90,7 @@ export const getQualityList = (qualityList , selectedIndex) => {
 }
 
 export const getVolumeVolumeHTML =(isLive) => {
-    let volumeSeekbar = deviceIsMobile() ? '' : `<input type="range" id="volume"  max="100" value="100" class="volSeekRange" >` ;
+    let volumeSeekbar = deviceIsMobile() ? '' : `<input type="range" id="volume"  max="20" value="20" class="volSeekRange" >` ;
 
     if(!isLive){
 
@@ -142,8 +142,6 @@ export const getPIPButton = () => {
 
 export let setThemeOnStart= () => {
 
-    console.log("theme called");
-    //set theme and color
     let darkmode = localStorage.getItem('dark');
     let last_main_color =  localStorage.getItem("--main-color");
     let last_main_color_hex = localStorage.getItem("--main-color-hexvalue");
@@ -162,3 +160,4 @@ export let setThemeOnStart= () => {
 
 
 }
+

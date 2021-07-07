@@ -19,34 +19,25 @@ ffmpeg -re -i sample.mp4 -codec copy -f flv "rtmp://172.104.207.27:9090/43cd8f35
 ffmpeg -re -i sample.mp4 -codec copy -f flv rtmp://visionias:vision123@172.104.207.27:9090/43cd8f35/myStream
 */
 
+
+
 if (Hls.isSupported()) {
 
-    let conf = {
-        enableWorker: true,
-        liveBackBufferLength: 900,
-        /*
-        xhrSetup: function (xhr, url) {
-            xhr.withCredentials = true;
-        },
-        */
-        
-    };
+    
 
-    window.hls = new Hls();
+    window.hls = new Hls(config.conf);
     let y = "http://104.199.144.5:1935/vod/smil:4380201902171700.smil/playlist.m3u8";
     let x = "http://localhost:1935/test/mp4:sample.mp4/playlist.m3u8";
-    window.hls.loadSource("http://172.104.207.27:9090/901d85d7/smil:myStream.smil/playlist.m3u8?DVR"/*"http://172.104.207.27:9090/9096d6db/myStream/playlist.m3u8?DVR"*/);
+    config.url =x;
+    window.hls.loadSource(config.url);
     window.hls.attachMedia(video);
 
-   // console.log(hls)
 }
 
 window.hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
-    //console.log(data.details.live);
     window.watchLiveDuration =  parseInt(data.details.totalduration) 
     videoIsLive = data.details.live;
     initVideoPlayer(videoIsLive);
-
     if(videoIsLive){
         // update time whenever video duration is  changed
          window.player.updateLiveTotalDuration(parseInt(window.watchLiveDuration));
@@ -59,6 +50,11 @@ window.hls.on(Hls.Events.LEVEL_UPDATED, (d ,data) => {
     
 })
 
+window.hls.on(Hls.Events.ERROR, (e ,data) => {
+    if(videoIsLive) return;
+    if(!data.fatal) return;
+    window.player.showError(data.type);
+   });
 
 
 
@@ -131,3 +127,15 @@ video.onpause = function() {
     document.getElementById("playPause").innerHTML = getIcons("icon-play");
 }
 
+
+video.onwaiting = (event) => {
+    window.player.drawLoader();
+
+};
+video.oncanplaythrough = (event) => {
+   window.player.removeLoader();
+};
+video.onplaying = (event) => {
+    
+   window.player.removeLoader();
+};

@@ -1,7 +1,14 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 8 version
+*/
+
 :root {
 	--seekbar-color: rgba(0, 0, 0, 0);
 	--track-color: rgba(100, 100, 100, 0.2);
-	--buffer-color: rgba(255, 255, 255, 1);
+	--buffer-color: #fff;
 	--playback-track-color: rgba(0, 0, 0, 0.01);
 	--playback-prog-color: rgba(255, 255, 255, 0.75);
 	--seekbar-thumb-color: rgba(255, 0, 0, 0.5);
@@ -10,7 +17,7 @@
 	--overlay-color: #ffffff;
 	--top-positioning: calc(50% - (100% * 8 / 65.5));
 	--progress-rounding: 20px;
-	--main-color: #c0336c;
+	--main-color: #8386f0;
 	--menu-bg-color: #ffffff;
 	--theme-backgorund: #ffffff;
 }
@@ -69,6 +76,8 @@ video {
 	background: black;
 	top: 50%;
 	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
 
@@ -216,6 +225,7 @@ progress {
 	border: 0;
 	background-color: var(--track-color);
 }
+
 progress::-webkit-progress-bar {
 	background-color: var(--track-color);
 	border-radius: var(--progress-rounding);
@@ -226,7 +236,7 @@ progress::-webkit-progress-value {
 	border-bottom-left-radius: var(--progress-rounding);
 }
 
-.progress::-moz-progress-bar {
+progress::-moz-progress-bar {
 	background-color: var(--buffer-color);
 	border-radius: var(--progress-rounding);
 }
@@ -276,6 +286,7 @@ progress.playbackProgress::-moz-progress-bar {
 	overflow: hidden;
 
 	-webkit-transition: all ease-in-out 250ms;
+	-o-transition: all ease-in-out 250ms;
 	transition: all ease-in-out 250ms;
 }
 
@@ -286,21 +297,32 @@ progress.playbackProgress::-moz-progress-bar {
 	position: absolute;
 	bottom: 0;
 	left: 50%;
+	-webkit-transform: translate(-50%, 0);
+	-ms-transform: translate(-50%, 0);
 	transform: translate(-50%, 0);
+	background: -o-radial-gradient(
+		50% -46.53%,
+		106.53% 106.53%,
+		hsl(0deg 0% 0% / 0%) 63%,
+		rgb(0 0 0 / 63%) 151.65%
+	);
 	background: radial-gradient(
 		106.53% 106.53% at 50% -46.53%,
 		hsl(0deg 0% 0% / 0%) 63%,
 		rgb(0 0 0 / 63%) 151.65%
 	);
 	-webkit-transition: all ease-in-out 200ms;
+	-o-transition: all ease-in-out 200ms;
 	transition: all ease-in-out 200ms;
 }
 
 .light_theme_color {
 	background: var(--theme-backgorund);
+	-webkit-box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 
 	-webkit-transition: color ease-in 100ms;
+	-o-transition: color ease-in 100ms;
 	transition: color ease-in 100ms;
 	border: 1px solid rgba(255, 255, 255, 0.253) !important;
 }
@@ -308,8 +330,15 @@ progress.playbackProgress::-moz-progress-bar {
 .control_container .top-container {
 	width: 100%;
 	height: 20%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
 	flex-direction: column;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
 	justify-content: center;
 }
 
@@ -318,12 +347,16 @@ progress.playbackProgress::-moz-progress-bar {
 	height: 0;
 }
 .control_container .bottom-container {
+	display: -ms-grid;
 	display: grid;
+	-ms-grid-columns: 30% 40% 30%;
 	grid-template-columns: 30% 40% 30%;
 
 	width: 95%;
 	height: 75%;
 	margin: 0 auto;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
 	align-items: center;
 }
 
@@ -340,7 +373,11 @@ progress.playbackProgress::-moz-progress-bar {
 }
 
 .bottom-container .first_section {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
 	align-items: center;
 }
 
@@ -349,14 +386,25 @@ progress.playbackProgress::-moz-progress-bar {
 }
 
 .bottom-container .second_section {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
 	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
 	justify-content: space-between;
 }
 
 .second_section .center_control-container {
+	-webkit-box-flex: 0;
+	-ms-flex: 0 60%;
 	flex: 0 60%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-ms-flex-pack: distribute;
 	justify-content: space-around;
 }
 .second_section .timer {
@@ -372,8 +420,14 @@ progress.playbackProgress::-moz-progress-bar {
 }
 
 .bottom-container .third_section {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
 	align-items: center;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
 	justify-content: flex-end;
 }
 
@@ -387,6 +441,7 @@ progress.playbackProgress::-moz-progress-bar {
 	padding: 0.8rem 2rem;
 	color: white;
 	font-family: inherit;
+	-webkit-box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
 	box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
 	font-weight: 500;
 	border-radius: 2px;
@@ -398,7 +453,90 @@ progress.playbackProgress::-moz-progress-bar {
 	position: absolute;
 	left: 2%;
 }
+.root_controller-container .error_container {
+	top: 1%;
+	position: absolute;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	left: 1%;
+	max-width: 98%;
+}
+.root_controller-container .keypress_container {
+	top: 20%;
+	position: absolute;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	left: 50%;
+	-webkit-transform: translate(-50%, -20%);
+	-ms-transform: translate(-50%, -20%);
+	transform: translate(-50%, -20%);
+}
+
+.keypress_container .keypress {
+	border: none;
+	background: none;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	font-family: "Poppins";
+	/* background: red; */
+	/* padding: 0 3rem; */
+	border-radius: 2px;
+	color: var(--main-color);
+	font-weight: 700;
+	font-size: 2rem;
+	width: 14rem;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	-webkit-animation: keyPress 400ms linear;
+	animation: keyPress 400ms linear;
+}
+
+.keypress_container .keypress svg {
+	width: 5rem;
+	height: 5rem;
+	fill: var(--main-color);
+}
+
+.root_controller-container #errorStatus {
+	border: none;
+	background: #b70858;
+	color: white;
+	font-family: inherit;
+	-webkit-box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+	box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+	font-weight: 600;
+	border-radius: 1px;
+	cursor: pointer;
+	font-size: 1.5rem;
+	padding: 0.8rem 2rem;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+.root_controller-container #errorStatus svg {
+	width: 3rem;
+	height: 3rem;
+	fill: #fff;
+	margin-left: 2rem;
+}
 .second_section .timer {
+	-webkit-box-flex: 0;
+	-ms-flex: 0 20%;
 	flex: 0 20%;
 	text-align: center;
 	user-select: none; /* supported by Chrome and Opera */
@@ -446,11 +584,14 @@ button > * {
 	bottom: 18%;
 	right: 1%;
 	border-radius: 3px;
+	-webkit-box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+		0 2px 6px 2px rgb(60 64 67 / 15%);
 	box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
 		0 2px 6px 2px rgb(60 64 67 / 15%);
 	padding: 2rem;
 
 	-webkit-transition: all ease-in-out 250ms;
+	-o-transition: all ease-in-out 250ms;
 	transition: all ease-in-out 250ms;
 }
 
@@ -459,8 +600,12 @@ button > * {
 	height: 14rem;
 	border-radius: 4px;
 	margin-top: 1rem;
+	display: -ms-grid;
 	display: grid;
+	-ms-grid-columns: 31% 31% 31%;
 	grid-template-columns: 31% 31% 31%;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
 	justify-content: space-between;
 	padding: 1rem 2rem;
 	margin: 1rem auto;
@@ -472,6 +617,8 @@ button > * {
 	height: 3.5rem;
 	border: none;
 	border-radius: 4px;
+
+	-webkit-box-shadow: 0 0px 4px 0px rgb(60 64 67 / 37%);
 
 	box-shadow: 0 0px 4px 0px rgb(60 64 67 / 37%);
 
@@ -502,9 +649,18 @@ button > * {
 	border-radius: 2px;
 	text-transform: capitalize;
 	cursor: pointer;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
 	align-items: center;
+	-webkit-box-pack: space-evenly;
+	-ms-flex-pack: space-evenly;
 	justify-content: space-evenly;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
 	flex-direction: row;
 }
 
@@ -525,6 +681,7 @@ button > * {
 	position: absolute;
 	width: 100%;
 	-webkit-transition: left ease-in-out 250ms;
+	-o-transition: left ease-in-out 250ms;
 	transition: left ease-in-out 250ms;
 	left: 0%;
 }
@@ -551,6 +708,7 @@ button > * {
 	position: absolute;
 	width: 100%;
 	-webkit-transition: right ease-in-out 250ms;
+	-o-transition: right ease-in-out 250ms;
 	transition: right ease-in-out 250ms;
 	right: 0;
 }
@@ -559,6 +717,7 @@ button > * {
 	max-height: 17rem;
 	margin: 1rem auto 1rem;
 	border: none;
+	-webkit-box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 15%);
 	padding: 1rem 0;
 	overflow-x: hidden;
@@ -624,7 +783,95 @@ button > * {
 	cursor: pointer;
 	width: 10%;
 	border: 1px solid rgba(255, 255, 255, 0.253) !important;
+	-webkit-transform: translate(-50%, -0%);
+	-ms-transform: translate(-50%, -0%);
 	transform: translate(-50%, -0%);
 	left: 20%;
 	display: none;
+}
+
+@-webkit-keyframes keyPress {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+
+	100% {
+		-webkit-transform: scale(2);
+		transform: scale(2);
+	}
+}
+
+@keyframes keyPress {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+
+	100% {
+		-webkit-transform: scale(2);
+		transform: scale(2);
+	}
+}
+
+.root_controller-container .loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.lds-ring {
+	display: inline-block;
+	position: relative;
+	width: 5rem;
+}
+.lds-ring div {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	position: absolute;
+	width: 6rem;
+	bottom: 0;
+	height: 6rem;
+	margin: 1px;
+	border: 0.5rem solid var(--main-color);
+	border-radius: 100%;
+	-webkit-animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	border-color: var(--main-color) transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+	-webkit-animation-delay: -0.45s;
+	animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+	-webkit-animation-delay: -0.3s;
+	animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+	-webkit-animation-delay: -0.15s;
+	animation-delay: -0.15s;
+}
+@-webkit-keyframes lds-ring {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes lds-ring {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }

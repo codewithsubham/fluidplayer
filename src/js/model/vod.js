@@ -1,5 +1,5 @@
 import Player from "./player";
-import {convertToTimecode, setThemeOnStart } from "./domelements"
+import {convertToTimecode, getIcons, setThemeOnStart } from "./domelements"
 
 export default class Vod extends Player{
 
@@ -11,7 +11,7 @@ export default class Vod extends Player{
 
     initVodPlayer(){
         video.onloadedmetadata = () => {
-            //seekbar values
+
             document.getElementById("playbackProgress").max = video.duration;
             document.getElementById("myRange").max = video.duration;
             document.getElementById("bufferProgress").max = video.duration;
@@ -23,13 +23,22 @@ export default class Vod extends Player{
             
             if(localStorage.getItem(`currentTime-${config.videoid}`)){
                 video.currentTime = parseInt(localStorage.getItem(`currentTime-${config.videoid}`));
+                return;
             }
 
+            video.currentTime = 0
+        
          }
         return;
     }
 
+    showError(Err){
+
+       document.querySelector(".error_container").innerHTML = `<div class="errorStatus" id="errorStatus">${config.errorCode} ${Err} ${getIcons("icon-close")} </div>`
+        
+    }
   
 
     
 }
+
