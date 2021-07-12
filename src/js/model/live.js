@@ -1,19 +1,23 @@
 import Player from "./player";
-import { elements ,  convertToTimecode } from "./domelements";
+import { elements, convertToTimecode } from "./domelements";
 
-export default class Live extends Player{
+export default class Live extends Player
+{
 
-    constructor(isLive){
+    constructor(isLive)
+    {
         super(isLive);
-        
+
         elements.liveStatus.style.display = "block";
-        elements.liveStatus.addEventListener("click" , () => {
+        elements.liveStatus.addEventListener("click", () =>
+        {
             this.goLive();
         })
 
     }
 
-    updateLiveTotalDuration(duration){
+    updateLiveTotalDuration(duration)
+    {
         // this function is being called from index.js inside hls.events.LEVEL_UPDATE if player is live
 
         document.getElementById("playbackProgress").max = duration;
@@ -22,8 +26,9 @@ export default class Live extends Player{
         return;
     }
 
-    updateLiveCurrentTime(currentTime){
-        
+    updateLiveCurrentTime(currentTime)
+    {
+
         document.getElementById("playbackProgress").value = currentTime;
         document.getElementById("myRange").value = currentTime;
         document.getElementById("curenttime").innerHTML = convertToTimecode(parseInt(currentTime));
@@ -31,8 +36,9 @@ export default class Live extends Player{
     }
 
 
-    goLive(){
-        video.currentTime = parseInt(window.watchLiveDuration) - 10;
+    goLive()
+    {
+        video.currentTime = parseInt(hls.liveSyncPosition);
         return;
     }
 

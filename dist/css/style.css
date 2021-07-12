@@ -70,10 +70,9 @@ textarea {
 }
 video {
 	position: absolute;
-	z-index: -1;
+	z-index: 1;
 	width: 100%;
 	height: 100%;
-	background: black;
 	top: 50%;
 	left: 50%;
 	-webkit-transform: translate(-50%, -50%);
@@ -284,10 +283,10 @@ progress.playbackProgress::-moz-progress-bar {
 	height: 100%;
 	position: relative;
 	overflow: hidden;
-
-	-webkit-transition: all ease-in-out 250ms;
-	-o-transition: all ease-in-out 250ms;
-	transition: all ease-in-out 250ms;
+	z-index: 999;
+	-webkit-transition: all linear 250ms;
+	-o-transition: all linear 250ms;
+	transition: all linear 250ms;
 }
 
 .root_controller-container .control_container {
@@ -560,16 +559,17 @@ button > * {
 
 .bottom-container .third_section #settings .hd {
 	background: var(--main-color);
-	font-family: inherit;
-	font-size: 1.2rem;
-	padding: 0.2rem 1rem;
-	position: absolute;
-	color: white;
-	font-weight: 900;
-	font-family: "Poppins";
-	border-radius: 2px;
-	top: 5%;
-	left: 41%;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.3rem 1rem;
+    position: absolute;
+    color: white;
+    font-weight: 900;
+    font-family: "Poppins";
+    border-radius: 2px;
+    top: 5%;
+    left: 41%;
+    width: fit-content;
 }
 
 .remove_setting_container {
@@ -590,9 +590,9 @@ button > * {
 		0 2px 6px 2px rgb(60 64 67 / 15%);
 	padding: 2rem;
 
-	-webkit-transition: all ease-in-out 250ms;
-	-o-transition: all ease-in-out 250ms;
-	transition: all ease-in-out 250ms;
+	-webkit-transition: all linear 250ms;
+	-o-transition: all linear 250ms;
+	transition: all linear 250ms;
 }
 
 .menu_container .pallate_creater_holder .pallates {
@@ -680,9 +680,9 @@ button > * {
 	margin-top: 1rem;
 	position: absolute;
 	width: 100%;
-	-webkit-transition: left ease-in-out 250ms;
-	-o-transition: left ease-in-out 250ms;
-	transition: left ease-in-out 250ms;
+	-webkit-transition: left linear 250ms;
+	-o-transition: left linear 250ms;
+	transition: left linear 250ms;
 	left: 0%;
 }
 
@@ -707,9 +707,9 @@ button > * {
 	margin-top: 1rem;
 	position: absolute;
 	width: 100%;
-	-webkit-transition: right ease-in-out 250ms;
-	-o-transition: right ease-in-out 250ms;
-	transition: right ease-in-out 250ms;
+	-webkit-transition: right linear 250ms;
+	-o-transition: right linear 250ms;
+	transition: right linear 250ms;
 	right: 0;
 }
 .options_container .value_selector {
